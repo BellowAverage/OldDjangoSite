@@ -1,0 +1,28 @@
+{% extends "app01/base.html" %}
+{% block title %}View List{% endblock %}
+{% block content %}
+    <h1>user</h1>
+    <ul>
+        <table>
+            <thead> <!-- table header section -->
+            <tr> <!-- table row -->
+                {% for each in col %}
+                    <th>{{each}}</th>>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody> <!-- table body section -->
+            <tr>
+                {% for each in col %}
+                    <th>{{each}}</th>>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>Row 2, Column 1</td>
+                <td>Row 2, Column 2</td>
+                <td>Row 2, Column 3</td>
+            </tr>
+            </tbody>
+        </table>
+    </ul>
+{% endblock %}

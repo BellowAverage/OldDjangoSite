@@ -1,0 +1,18 @@
+.cs_location_index {
+    margin-top: 0.95rem;
+    margin-left: 0.2rem;
+    /*color: white;*/
+}
+
+.cs_base_header_background {
+    /*background-color: #333d54;*/
+}
+
+.cs_container_1 {
+    border-radius: 20px;
+    /*border-style: groove;*/
+    padding: 1.5rem;
+    /*border: 2px solid black;*/
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5); /* 创建阴影效果 */
+}
+

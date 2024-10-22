@@ -1,0 +1,743 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Hadoop3.x Basics</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-interactiveBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-translucentGray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="40285cd1-abd1-476e-867b-eda4f0a4d83b" class="page serif"><header><div class="page-header-icon undefined"><img class="icon" src="Hadoop3%20x%20Basics%2040285cd1abd1476e867beda4f0a4d83b/Hadoop.png"/></div><h1 class="page-title">Hadoop3.x Basics</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-created_time"><th><span class="icon property-icon"><svg viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesCreatedAt"><path d="M8 15.126C11.8623 15.126 15.0615 11.9336 15.0615 8.06445C15.0615 4.20215 11.8623 1.00293 7.99316 1.00293C4.13086 1.00293 0.938477 4.20215 0.938477 8.06445C0.938477 11.9336 4.1377 15.126 8 15.126ZM8 13.7383C4.85547 13.7383 2.33301 11.209 2.33301 8.06445C2.33301 4.91992 4.84863 2.39746 7.99316 2.39746C11.1377 2.39746 13.6738 4.91992 13.6738 8.06445C13.6738 11.209 11.1445 13.7383 8 13.7383ZM4.54102 8.91211H7.99316C8.30078 8.91211 8.54004 8.67285 8.54004 8.37207V3.8877C8.54004 3.58691 8.30078 3.34766 7.99316 3.34766C7.69238 3.34766 7.45312 3.58691 7.45312 3.8877V7.83203H4.54102C4.2334 7.83203 4.00098 8.06445 4.00098 8.37207C4.00098 8.67285 4.2334 8.91211 4.54102 8.91211Z"></path></svg></span>Created</th><td><time>@July 4, 2023 6:17 PM</time></td></tr><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><svg viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesMultipleSelect"><path d="M1.91602 4.83789C2.44238 4.83789 2.87305 4.40723 2.87305 3.87402C2.87305 3.34766 2.44238 2.91699 1.91602 2.91699C1.38281 2.91699 0.952148 3.34766 0.952148 3.87402C0.952148 4.40723 1.38281 4.83789 1.91602 4.83789ZM5.1084 4.52344H14.3984C14.7607 4.52344 15.0479 4.23633 15.0479 3.87402C15.0479 3.51172 14.7607 3.22461 14.3984 3.22461H5.1084C4.74609 3.22461 4.45898 3.51172 4.45898 3.87402C4.45898 4.23633 4.74609 4.52344 5.1084 4.52344ZM1.91602 9.03516C2.44238 9.03516 2.87305 8.60449 2.87305 8.07129C2.87305 7.54492 2.44238 7.11426 1.91602 7.11426C1.38281 7.11426 0.952148 7.54492 0.952148 8.07129C0.952148 8.60449 1.38281 9.03516 1.91602 9.03516ZM5.1084 8.7207H14.3984C14.7607 8.7207 15.0479 8.43359 15.0479 8.07129C15.0479 7.70898 14.7607 7.42188 14.3984 7.42188H5.1084C4.74609 7.42188 4.45898 7.70898 4.45898 8.07129C4.45898 8.43359 4.74609 8.7207 5.1084 8.7207ZM1.91602 13.2324C2.44238 13.2324 2.87305 12.8018 2.87305 12.2686C2.87305 11.7422 2.44238 11.3115 1.91602 11.3115C1.38281 11.3115 0.952148 11.7422 0.952148 12.2686C0.952148 12.8018 1.38281 13.2324 1.91602 13.2324ZM5.1084 12.918H14.3984C14.7607 12.918 15.0479 12.6309 15.0479 12.2686C15.0479 11.9062 14.7607 11.6191 14.3984 11.6191H5.1084C4.74609 11.6191 4.45898 11.9062 4.45898 12.2686C4.45898 12.6309 4.74609 12.918 5.1084 12.918Z"></path></svg></span>Labels &amp; Language</th><td><span class="selected-value select-value-color-purple">CentOS</span><span class="selected-value select-value-color-yellow">Hadoop</span><span class="selected-value select-value-color-green">Java</span></td></tr><tr class="property-row property-row-url"><th><span class="icon property-icon"><svg viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesUrl"><path d="M7.69922 10.8945L8.73828 9.84863C7.91797 9.77344 7.34375 9.51367 6.91992 9.08984C5.76465 7.93457 5.76465 6.29395 6.91309 5.14551L9.18262 2.87598C10.3379 1.7207 11.9717 1.7207 13.127 2.87598C14.2891 4.04492 14.2822 5.67188 13.1338 6.82031L11.958 7.99609C12.1768 8.49512 12.2451 9.10352 12.1289 9.62988L14.0908 7.6748C15.7725 6 15.7793 3.62109 14.084 1.92578C12.3887 0.223633 10.0098 0.237305 8.33496 1.91211L5.95605 4.29785C4.28125 5.97266 4.26758 8.35156 5.96289 10.0469C6.36621 10.4434 6.90625 10.7441 7.69922 10.8945ZM8.30078 5.13184L7.26855 6.17773C8.08203 6.25293 8.66309 6.51953 9.08008 6.93652C10.2422 8.09863 10.2422 9.73242 9.08691 10.8809L6.81738 13.1504C5.66211 14.3057 4.03516 14.3057 2.87305 13.1504C1.71094 11.9883 1.71777 10.3545 2.87305 9.20605L4.04199 8.03027C3.83008 7.53125 3.75488 6.92969 3.87109 6.39648L1.91602 8.35156C0.234375 10.0264 0.227539 12.4121 1.92285 14.1074C3.61816 15.8027 5.99707 15.7891 7.67188 14.1143L10.0439 11.7354C11.7256 10.0537 11.7324 7.6748 10.0371 5.98633C9.64062 5.58301 9.10059 5.28223 8.30078 5.13184Z"></path></svg></span>Source</th><td><a href="https://www.bilibili.com/video/BV1Qp4y1n7EN/" class="url-value">https://www.bilibili.com/video/BV1Qp4y1n7EN/</a></td></tr></tbody></table></header><div class="page-body"><h2 id="c2e6bda9-641d-463b-b098-33156b18551c" class="">引言</h2><p id="3d45b4bd-a3e7-494e-a6ae-2beab79a9ec9" class="">Hadoop是大数据技术中重要的框架之一。在Hadoop的基础上，能够更容易地开发和运行其他处理大规模数据的框架。作为学习笔记，本文包括Hadoop的理论和在CentOS上的应用实践，包括配置和基本命令等。</p><h2 id="55203cc1-982a-477c-abfa-028fecd5f9a5" class="">Hadoop3.x 学习笔记 - 基础篇</h2><h3 id="28a4dd4c-756c-4cb6-8ee3-7bd2c16da0f9" class="">使用VMware虚拟机进行CentOS的配置和安装</h3><ol type="1" id="4137c147-91e2-4116-9abb-05b650822e7a" class="numbered-list" start="1"><li>在本机中安装CentOS 7镜像的虚拟机，命名为hadoop100</li></ol><ol type="1" id="13b58005-9754-43c0-9f72-70a7164597b8" class="numbered-list" start="2"><li>在虚拟网络编辑器中，设置NAT网络，VMnet8，子网IP设置为10端口</li></ol><ol type="1" id="e5379a2b-069a-4711-acd5-976235944b38" class="numbered-list" start="3"><li>在网络适配器控制面板中设置该适配器默认网关为192.168.10.2</li></ol><ol type="1" id="07d7d136-3b57-4418-b2ba-4880c4b13238" class="numbered-list" start="4"><li>将Hadoop100设置为静态IP地址，以确保本机能够找到该服务器，并添加其他相关配置。修改主机名称，配置主机名称映射等。</li></ol><pre id="857dc9f0-d19c-4ea8-9c84-59db49b00093" class="code"><code>[root@hadoop100 chriswang]# vim /etc/sysconfig/network-scripts/ifcfg-ens33
+--------------------------------------------------------------------------
+# BOOTPROTO=&quot;dhcp&quot;
+# 修改为：
+BOOTPROTO=&quot;static&quot;
+# 添加IP地址、网关、域名解析器
+IPADDR=192.168.10.100
+GATEWAY=192.168.10.2
+DNS1=192.168.10.2
+--------------------------------------------------------------------------
+# 修改主机名称为hadoop100
+[root@hadoop100 chriswang]# vim /etc/hostname
+# 修改主机名称映射
+[root@hadoop100 chriswang]# vim /etc/hosts
+--------------------------------------------------------------------------
+# 添加映射给至多8台服务器
+......
+192.168.10.100 hadoop100
+192.168.10.101 hadoop101
+......
+192.168.10.108 hadoop108
+--------------------------------------------------------------------------
+# 重启以更新配置
+[root@hadoop100 chriswang]# reboot</code></pre><ol type="1" id="f16bae79-0997-4c4b-b617-e8798732943e" class="numbered-list" start="5"><li>使用本机PowerShell通过ssh协议模拟远程连接，成功。</li></ol><pre id="55aeb043-641c-440a-99aa-7204e2101d18" class="code"><code>PS C:\Users\10131&gt; ssh chriswang@192.168.10.100
+chriswang@192.168.10.100&#x27;s password:
+Last login: Tue Jul  4 19:05:39 2023</code></pre><ol type="1" id="84f809dc-0851-4f1f-81d1-420d4ca03e71" class="numbered-list" start="6"><li>配置Windows地址映像，地址为<code>C:\Windows\System32\drivers\etc\hosts</code></li></ol><ol type="1" id="6285b389-3b27-460d-8070-83a7077f4dad" class="numbered-list" start="7"><li>CentOS环境配置 - 基本工具&amp;环境</li></ol><pre id="b861eb51-7306-4403-b76e-5be800d18240" class="code"><code>[chriswang@hadoop100 ~]$ sudo yum install -y epel-release
+[chriswang@hadoop100 ~]$ sudo systemctl stop firewalld
+[chriswang@hadoop100 ~]$ sudo systemctl disable firewalld.service
+Removed symlink /etc/systemd/system/multi-user.target.wants/firewalld.service.
+Removed symlink /etc/systemd/system/dbus-org.fedoraproject.FirewallD1.service.
+# 清理预装java工具
+[root@hadoop100 chriswang]# rpm -qa | grep -i java | xargs -n1 rpm -e --nodeps</code></pre><h3 id="e780861a-b1e6-4c6b-982f-282088ed88a2" class="">克隆多台虚拟机以模拟分布式集群</h3><ul id="7e158bb9-965a-46c2-949c-02dd5bc2b620" class="bulleted-list"><li style="list-style-type:disc">使用VMware内置克隆工具，选择完全克隆即可</li></ul><ul id="a224cd8b-7233-4a9e-ba5f-272cf13eb20b" class="bulleted-list"><li style="list-style-type:disc">对克隆后的服务器进行配置修改，即<code>(100 —&gt; 102, 103, 104)</code></li></ul><h3 id="60ddbdda-3949-48e3-9d03-fe15905a5d92" class="">安装并配置Java JDK和Hadoop</h3><ul id="e7a037c5-2e6e-409f-8ea5-9217cb7cb1d6" class="bulleted-list"><li style="list-style-type:disc">安装Java JDK后，配置全局声明：</li></ul><pre id="29c979f7-ffd6-42ff-a6f5-9e8bbba5b535" class="code"><code>#JAVA_HOME
+export JAVA_HOME=/home/chriswang/Applications/jdk1.8.0_212
+export PATH=$PATH:$JAVA_HOME/bin</code></pre><ul id="bc1625a0-d340-4092-aba0-b16813356b94" class="bulleted-list"><li style="list-style-type:disc">安装Hadoop后，添加声明：</li></ul><pre id="911aad2f-6d56-4fac-9946-575e4157caf1" class="code"><code>#HADOOP_HOME
+export HADOOP_HOME=/home/chriswang/Applications/hadoop-3.1.3
+export PATH=$PATH:$HADOOP_HOME/bin
+export PATH=$PATH:$HADOOP_HOME/sbin</code></pre><ul id="7fbea7b9-e8f7-4ea6-9b50-b85213635480" class="bulleted-list"><li style="list-style-type:disc">随后使用<code>source /etc/profile</code>即可开启该位置注册过的所有服务</li></ul><h3 id="e47a56bb-4cda-4f6c-b3d4-38de9573c544" class="">完全分布式的运行模式</h3><ol type="1" id="9d5ce0b1-0d89-4d0d-babc-cd1b24befbfb" class="numbered-list" start="1"><li>编写集群分发脚本<code>xsync</code></li></ol><ul id="8c650fbc-b83b-41c6-8cee-57d4af082ba7" class="bulleted-list"><li style="list-style-type:disc">使用<code>scp</code>命令拷贝工具和环境至其他服务器</li></ul><pre id="64e87eda-18b0-4abf-900d-87b56a6bc520" class="code"><code># 在hadoop102上执行：
+scp -r /home/chriswang/Applications/jdk1.8.0_212/ root@hadoop104:/home/chriswang/Applications
+scp -r /home/chriswang/Applications/jdk1.8.0_212/ root@hadoop103:/home/chriswang/Applications</code></pre><ul id="5ae08950-db44-463b-9cc6-480275f8294d" class="bulleted-list"><li style="list-style-type:disc">或使用以<code>rsync</code>为基础的<code>xsync</code>集群分发脚本</li></ul><p id="0ff3ff8d-f1da-41c6-9539-c2f56b3366f9" class="">a. 在<code>/home/chriswang/bin</code>下创建<code>bash</code>命令文件<code>xsync</code>：</p><pre id="26e410d8-5ff5-4cff-aa23-d9cdb0cdc1dc" class="code"><code>#!/bin/bash
+#1. 判断参数个数
+if [ $# -lt 1 ]
+then
+ echo Not Enough Arguement!
+ exit;
+fi
+#2. 遍历集群所有机器
+for host in hadoop102 hadoop103 hadoop104
+do
+ echo ==================== $host ====================
+ #3. 遍历所有目录，挨个发送
+ for file in $@
+ do
+ #4. 判断文件是否存在
+ if [ -e $file ]
+ then
+ #5. 获取父目录
+ pdir=$(cd -P $(dirname $file); pwd)
+ #6. 获取当前文件的名称
+ fname=$(basename $file)
+ ssh $host &quot;mkdir -p $pdir&quot;
+ rsync -av $pdir/$fname $host:$pdir
+ else
+ echo $file does not exists!
+ fi
+ done
+done</code></pre><p id="6fa7ffa8-019c-4a74-b420-0c5e0aa3e568" class="">b. 修改<code>xsync</code>脚本权限，并将脚本复制到<code>/bin</code>中，以便全局调用</p><pre id="75acf8e5-f793-4ec2-adbc-426215942986" class="code"><code>chmod +x xsync
+sudo cp xsync /bin/</code></pre><p id="65948ff6-3d08-4459-b932-91c14247541f" class="">c. 使用<code>xsync</code>脚本将<code>kafka</code>部署至其他服务器</p><pre id="884d6852-6139-4db6-be8d-fec474cff747" class="code"><code>xsync ../Applications/kafka/</code></pre><h2 id="c6eee5d8-562c-489d-8c23-686ec4bdd261" class="">Other References</h2><ul id="27abe56c-8ffc-406c-b31a-6ee394b202ff" class="toggle"><li><details open=""><summary>中文教程 - 尚硅谷Bilibili</summary><figure id="39ddb574-2cf7-4bc6-b303-40f85a9991e1"><a href="https://www.bilibili.com/video/BV1Qp4y1n7EN/" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">尚硅谷大数据Hadoop教程，hadoop3.x搭建到集群调优，百万播放_哔哩哔哩_bilibili</div><div class="bookmark-description">尚硅谷大数据Hadoop教程，hadoop3.x搭建到集群调优，百万播放共计178条视频，包括：01_尚硅谷_Hadoop_开篇_课程整体介绍、02_尚硅谷_Hadoop_概论_大数据的概念、03_尚硅谷_Hadoop_概论_大数据的特点等，UP主更多精彩视频，请关注UP账号。</div></div><div class="bookmark-href"><img src="Hadoop3%20x%20Basics%2040285cd1abd1476e867beda4f0a4d83b/Hadoop.png" class="icon bookmark-icon"/>https://www.bilibili.com/video/BV1Qp4y1n7EN/</div></div><img src="Hadoop3%20x%20Basics%2040285cd1abd1476e867beda4f0a4d83b/Hadoop.png" class="bookmark-image"/></a></figure></details></li></ul><ul id="46f7a895-bef4-4bc4-a79a-3923e7fb325b" class="toggle"><li><details open=""><summary>官方文档 - Apache Hadoop 3.3.6</summary><figure id="394a6194-8a98-42a5-96b2-54592e93478f"><a href="https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Apache Hadoop 3.3.6 – Hadoop: Setting up a Single Node Cluster.</div></div><div class="bookmark-href"><img src="Hadoop3%20x%20Basics%2040285cd1abd1476e867beda4f0a4d83b/Hadoop.png" class="icon bookmark-icon"/>https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html</div></div></a></figure></details></li></ul><ul id="918ff0d6-bab0-45ae-9d7b-24e475261cc0" class="toggle"><li><details open=""><summary>建议学习路线图 - 尚硅谷Bilibili</summary><figure id="156f5db8-b53a-46ba-a3a0-b0b08c8ac5a4"><a href="https://www.bilibili.com/read/cv5213600" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">2023最新大数据学习路线图</div><div class="bookmark-description">2023大数据学习路线（快速版）核心基础：Java基础MySQLLinux+ShellMaven大数据核心框架：GitHadoopSparkFlinkKafkaZooKeeperHiveFlumeHBaseKylinHudi项目实战：电商数仓5.0电商项目(实时处理)阿里云数仓(离线)阿里云数仓(实时)Flink实时数仓3.0腾讯云数仓(实时)腾讯云数仓(离线)湖仓一体注：教程会不定期更新，请持续关注哦~记得三连支持，感谢！详细大数据学习路线一、核心基础1. Java基础：千万播放，宋红康老师新版课程！案</div></div><div class="bookmark-href"><img src="Hadoop3%20x%20Basics%2040285cd1abd1476e867beda4f0a4d83b/Hadoop.png" class="icon bookmark-icon"/>https://www.bilibili.com/read/cv5213600</div></div><img src="Hadoop3%20x%20Basics%2040285cd1abd1476e867beda4f0a4d83b/Hadoop.png" class="bookmark-image"/></a></figure><p id="7d2ab2bb-25f3-4fd7-bc1b-10ded4c14496" class="">
+</p></details></li></ul></div></article></body></html>

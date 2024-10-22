@@ -1,0 +1,26 @@
+[
+  {
+    "pic": "img/blogs/Icons/django.png",
+    "date": "March 30, 2023",
+    "category": "Django, Python, Shell",
+    "title": "Django Basics - Study Notes",
+    "content": "This is a tutorial notes covering the basics of building web applications using the Django web framework. Learn how to create and modify apps, direct browsers to different views with Views module, and manage URLs with the URLs module.",
+    "link": "/media/notion_files/080823/0808/Django_Basics.html"
+  },
+  {
+    "pic": "img/blogs/Icons/Hadoop.png",
+    "date": "July 4, 2023",
+    "category": "CentOS, Hadoop, Java",
+    "title": "Hadoop3.x Basics",
+    "content": "Hadoop是大数据技术中重要的框架之一。在Hadoop的基础上，能够更容易地开发和运行其他处理大规模数据的框架。作为学习笔记，本文包括Hadoop的理论和在CentOS上的应用实践，包括配置和基本命令等。",
+    "link": "/media/notion_files/070523/hadoop_basics_notes.html"
+  },
+  {
+    "pic": "img/blogs/Icons/nginx.jpg",
+    "date": "July 9, 2023",
+    "category": "Http, Python, Nginx",
+    "title": "Nginx Access Log Generator",
+    "content": "Nginx是一种流行的开源Web服务器和反向代理服务器技术。它旨在处理高流量的网站并快速高效地提供Web内容。Nginx还可用作负载均衡器、HTTP缓存和电子邮件协议（IMAP、POP3和SMTP）的代理服务器等。本篇笔记记录的技术，旨在通过模拟多个IP登录访问nginx的index.html页面，达到生成数量级达到至多每日千万体量的访问日志的效果。这些日志文件数据将作为后续分析的基础。",
+    "link": "/media/notion_files/070923/Nginx%20Access%20Log%20Generator%20ac0ae7cc599a40f09d36f4031e6e9063.html"
+  }
+]

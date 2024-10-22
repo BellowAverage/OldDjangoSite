@@ -1,0 +1,105 @@
+<!-- blog_table.html -->
+{% extends "blog_viewer_template.html" %}
+{% load static %}
+
+
+
+{% block head_demonstration %}
+    <h6>Here lists all blogs, notes and papers that I myself have entirely authored and made public.</h6>
+    <h6>Feel free to use all contents from blogs and notes with no restraint. &#127881;</h6>
+    <h6>For accessing certain items such as school papers & projects, however, permissions are required.</h6>
+    <h6>This is to prevent potential misuse, such as plagiarism and improper referencing.</h6>
+{% endblock %}
+
+{% block article_frame %}
+    <link href="{% static 'css/blog_table.css' %}" rel="stylesheet"/>
+    <section class="portfolio" id="portfolio">
+        <div class="container">
+
+
+            <div class="row">
+
+
+                <section id="password_part" class="password_section">
+                    <div id="password_verify">
+                        <div style="padding-top: 0.2rem; background-color: white">
+                            <hr class="my_separator">
+                        </div>
+                        <div class="password_explain"><b>Elevate your access authority by inputting the encryption key,
+                            <br>which can be obtained from the same
+                            source through which you accessed this website.</b></div>
+
+                        <div id="password-form" class="verify">
+                            <label for="password"><b>Enter encryption key: </b></label>
+                            <input type="password" class="my_password" id="password">
+                            <div class="tooltip">
+                                <button onclick="checkPassword()" class="my_submit"></button>
+                                <span class="tooltiptext">By clicking this button, you acknowledge that cookies will be utilized to ensure you only need to enter this key once.</span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div id="success_message" class="hidden">
+                        <div style="display: flex;justify-content: space-between">
+                            <div class="success-icon"></div>
+                            <p style="padding-left: 1rem;padding-top: 0.3rem;">You have been authorized.</p>
+                        </div>
+                    </div>
+
+                </section>
+                <div class="filter-btn">
+                    <ul id="filterBtn">
+                        <li id="showAll" class="active">Recent</li>
+                        <li id="techFilter">Technology</li>
+                        <li id="busFilter">Business</li>
+                        <li>Misc</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="blog-showcase">
+                <div class="row">
+                    <div id="my-data">
+                        <div class="blog-content">
+                            {% for blog in blogs %}
+                                <div class="blog-box {{ blog.class }}">
+                                    <div class="blog-img">
+                                        <img src="{% static blog.pic %} "/>
+                                    </div>
+                                    <div class="blog-text">
+                                        <div class="blog-info">
+                                            <span>{{ blog.date }}</span>
+                                            <span>{{ blog.category }}</span>
+                                        </div>
+                                        <h3>{{ blog.title }}</h3>
+                                        <p>{{ blog.content }}</p>
+                                        {% if blog.encryption %}
+                                            <a style href="/blog/{{ blog.title }}">Read More</a>
+                                            <a id="encrypted_blog"
+                                               style="color: red; border-bottom: none;display: none;"
+                                               href="#">Encryption Key Required</a>
+                                        {% else %}
+                                            <a class="encrypted_blog" style="color: red; border-bottom: none" href="#">Encryption
+                                                Key Required</a>
+                                            <a class="encrypted_unlock" style="display: none;"
+                                               href="/blog/{{ blog.title }}">Read
+                                                More</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>// 这将 Django 的 Python 列表转换为 JavaScript 的数组
+    var trustedIPs = {{trusted_ip | safe}};
+    var userIP = "{{ request.META.HTTP_X_FORWARDED_FOR }}";  // 获取用户 IP 地址</script>
+{% endblock %}
+
+
+
+
+

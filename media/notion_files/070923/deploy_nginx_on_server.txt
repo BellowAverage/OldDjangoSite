@@ -1,0 +1,143 @@
+# edit /etc/apt/sources.list as:
+deb https://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
+deb-src https://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
+
+deb https://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
+deb-src https://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
+
+deb https://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
+deb-src https://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
+
+
+#deb https://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
+#deb-src https://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
+
+deb https://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse
+deb-src https://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse
+
+# preparation
+sudo apt update
+sudo apt upgrade
+sudo apt install vim
+sudo apt install python3
+sudo apt (aptitude) install openssh-server (might need input "n" to continue)
+sudo service ssh start
+sudo apt install net-tools
+
+# network info
+inet 192.168.71.128  netmask 255.255.255.0  broadcast 192.168.71.255
+
+# configuration:
+(venv) morningchris@---: ~/morningchris$ pip install uwsgi
+
+---
+sudo vim test.py
+def application(env, start_response):
+    start_response('200 OK', [('Content-Type', 'text/html')])
+    return [b'Hello World']
+(venv) morningchris@---: ~/morningchris$ uwsgi --http :8000 --wsgi-file test.py
+---
+
+settings.py ALLOWED_HOSTS = ["192.168.71.128"]
+sudo apt install nginx
+sudo service nginx start
+
+sudo vim /etc/nginx/sites-available/morningchris_nginx.config
+---
+upstream django {
+	    # server unix:///home/chriswang/morningchris/morningchris.sock; # for a file socket
+	    server 127.0.0.1:8001; # for a web port socket (we'll use this first)
+}
+
+server {
+	    listen      80;
+	    
+	    server_name 192.168.71.128; 
+	    
+	    charset     utf-8;
+	    
+	    client_max_body_size 75M;  # adjust to taste
+	    
+	    location /media  {
+	    	alias /home/chriswang/morningchris/media;  # your Django project's media files - amend as required
+	    }
+	    
+	    location /static {
+	    	alias /home/chriswang/morningchris/static; # your Django project's static files - amend as required
+	    }
+	    
+	    location / {
+	    	uwsgi_pass  django;
+	    	include     /home/chriswang/morningchris/uwsgi_params; # the uwsgi_params file you installed
+	    }
+}
+---
+sudo ln -s /etc/nginx/sites-available/morningchris_nginx.config /etc/nginx/sites-enabled/
+sudo vim uwsgi-params
+---
+uwsgi_param  QUERY_STRING       $query_string;
+uwsgi_param  REQUEST_METHOD     $request_method;
+uwsgi_param  CONTENT_TYPE       $content_type;
+uwsgi_param  CONTENT_LENGTH     $content_length;
+uwsgi_param  REQUEST_URI        $request_uri;
+uwsgi_param  PATH_INFO          $document_uri;
+uwsgi_param  DOCUMENT_ROOT      $document_root;
+uwsgi_param  SERVER_PROTOCOL    $server_protocol;
+uwsgi_param  REQUEST_SCHEME     $scheme;
+uwsgi_param  HTTPS              $https if_not_empty;
+uwsgi_param  REMOTE_ADDR        $remote_addr;
+uwsgi_param  REMOTE_PORT        $remote_port;
+uwsgi_param  SERVER_PORT        $server_port;
+uwsgi_param  SERVER_NAME        $server_name;
+---
+sudo service nginx restart
+settings.py:
+---
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR/'static'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR/'media'
+
+(venv) chriswang@---:~/morningchris$ python3 manage.py collectstatic
+(venv) chriswang@---:~/morningchris$ mkdir media
+
+uwsgi --socket :8001 --wsgi-file test.py
+sites-available/morningchris.conf ->socket
+uwsgi --socket morningchris.sock --wsgi-file test.py
+(venv) chriswang@---:~/morningchris$ sudo vim morningchris_uwsgi.ini
+
+---
+# morningchris_uwsgi.ini file
+[uwsgi]
+
+# Django-related settings
+# the base directory (full path)
+chdir           = /home/chriswang/morningchris
+# Django's wsgi file
+module          = morningchris.wsgi
+# the virtualenv (full path)
+home            = /home/chriswang/morningchris/venv
+
+# process-related settings
+# master
+master          = true
+# maximum number of worker processes
+processes       = 10
+# the socket (use the full path to be safe
+socket          = /home/chriswang/morningchris/morningchris.sock
+# ... with appropriate permissions - may be needed
+chmod-socket    = 777
+# clear environment on exit
+vacuum          = true
+# daemonize uwsgi and write messages into given log
+daemonize	= /home/chriswang/morningchris/uwsgi.log
+---
+uwsgi --ini morningchris_uwsgi.ini
+ps aux
+morningchris_nginx.conf listen -> 80
+
+
+
+
+

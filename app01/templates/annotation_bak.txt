@@ -1,0 +1,27 @@
+<section class="home" id="home">
+    <div class="container">
+
+    </div>
+</section>
+
+<section class="about" id="about">
+    <div class="container">
+
+        </div>
+</section>
+
+<section class="portfolio" id="portfolio">
+    <div class="container">
+    </div>
+</section>
+
+<section class="message">
+    <div class="container">
+
+    </div>
+</section>
+
+<section class="contact" id="contact">
+    <div class="container">
+    </div>
+</section>

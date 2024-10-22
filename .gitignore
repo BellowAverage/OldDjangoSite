@@ -1,0 +1,9 @@
+venv/
+media/xd_data_bak/
+media/xd_data_set/
+media/blog_info_table.csv
+media/Comments.xlsx
+media/NegativeClassification.csv
+media/NegativeComments.xlsx
+media/PositiveComments.xlsx
+media/uploaded.csv

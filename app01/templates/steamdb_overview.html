@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SteamDB Snapshot Overview</title>
+
+    <!-- Add your stylesheet links here, if any -->
+    <!-- Example: <link rel="stylesheet" href="your_stylesheet.css"> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+Wy1qQ9qJLyHwIpOOl12d4p1i0S1dAAM" crossorigin="anonymous">
+</head>
+<body>
+
+<div>
+
+    {{ text_query }}
+    {{ min_length }}
+    {{ max_length }}
+    {{ sentiment }}
+    {{ gpt_class }}
+
+</div>
+
+<div class="container mt-5">
+    <h1>SteamDB Snapshot Overview</h1>
+
+    <form id="search_form">
+        <div class="mb-3">
+            <label for="text_query" class="form-label">Text Query:</label>
+            <input type="text" class="form-control" id="text_query">
+        </div>
+
+        <div class="mb-3">
+            <label for="min_length" class="form-label">Min Length:</label>
+            <input type="text" class="form-control" id="min_length">
+        </div>
+
+        <div class="mb-3">
+            <label for="max_length" class="form-label">Max Length:</label>
+            <input type="text" class="form-control" id="max_length">
+        </div>
+
+        <div class="mb-3">
+            <label for="sentiment" class="form-label">Sentiment:</label>
+            <input type="text" class="form-control" id="sentiment">
+        </div>
+
+        <div class="mb-3">
+            <label for="gpt_class" class="form-label">GPT Class:</label>
+            <input type="text" class="form-control" id="gpt_class">
+        </div>
+
+        <!-- Add more input fields as needed -->
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchForm = document.getElementById("search_form");
+
+        searchForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            // Define an object to store form values
+            const formValues = {
+                text_query: document.getElementById("text_query").value,
+                min_length: document.getElementById("min_length").value,
+                max_length: document.getElementById("max_length").value,
+                sentiment: document.getElementById("sentiment").value,
+                gpt_class: document.getElementById("gpt_class").value,
+                // Add more variables as needed
+            };
+
+            // Construct the URL with query parameters dynamically
+            const url = `?${Object.entries(formValues).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&')}`;
+
+            // Redirect to the constructed URL
+            window.location.href = url;
+        });
+    });
+</script>
+
+<!-- Add your script or external script links here, if any -->
+
+</body>
+</html>

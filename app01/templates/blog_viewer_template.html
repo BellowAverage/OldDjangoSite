@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    {#    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>#}
+    {#    <meta name="keywords" content="HTML, CSS, JavaScript">#}
+    {#    <meta name="description"#}
+    {#          content="A clean, beautiful and responsive portfolio template for Developers! using only Html, CSS, and JavaScript">#}
+    {#    <meta name="author" content="Puskar Adhikari">#}
+    <title>Chris Wang | Blog Site</title>
+    <link href="{% static 'css/header.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/main.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/home.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/about.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/service.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/portfolio.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/testimonials.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/testimonials.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/blog.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/contact.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/footer.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/blog_table_main.css' %}" rel="stylesheet"/>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="row">
+            <div class="brand-name">
+                <a href="/" class="logo">Chris</a>
+            </div>
+            <div class="hamburger">
+                <i class="fa fa-bars">&#9776;</i>
+            </div>
+            <div class="navbar">
+                <ul>
+                    {% block header %}
+                        <li><a href="/">&lt;&lt;&lt; Home</a></li>
+                        {#                    <li><a href="#about">About</a></li>#}
+                        <!--<li><a href="#services">Services</a></li>-->
+                        {#                    <li><a href="#portfolio">Portfolio</a></li>#}
+                        <li><a href="#blog" class="active">Documents</a></li>
+                        {#                    <li><a href="#contact">Contact</a></li>#}
+                    {% endblock %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="sub-home" id="home">
+    <div class="container">
+        <div class="sub-home-content">
+            <div class="block">
+
+                {% block head_demonstration %}
+
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    {% block article_frame %}
+
+    {% endblock %}
+</section>
+
+
+<section class="copyright">
+    <div class="container">
+        <p><span id="year"></span>Last Update Jul 13th | Self-developed Using Django and Nginx</p>
+    </div>
+</section>
+
+</body>
+</html>
+<div class="lightbox hide">
+    <span class="close-lightbox fa fa-close"></span>
+    <img src="" alt="portfolio"/>
+</div>
+<script src="{% static 'js/app.js' %}"></script>
+<script src="{% static 'js/blog_table_main.js' %}"></script>
+
+</body>
+</html>
+

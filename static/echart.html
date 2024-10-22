@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>ECharts</title>
+
+    <script src="{% static 'js/echarts.min.js' %}"></script>
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+
+</head>
+<body>
+<div>This page has been successfully loaded. Developer only.</div>
+
+<div>
+
+    <table id="myTable" class="display">
+        <thead>
+            <tr>
+                <th>Column 1</th>
+                <th>Column 2</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Row 1 Data 1</td>
+                <td>Row 1 Data 2</td>
+            </tr>
+            <tr>
+                <td>Row 2 Data 1</td>
+                <td>Row 2 Data 2</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+<script>
+
+    $(document).ready(function () {
+        $('#myTable').DataTable()
+    });
+
+</script>
+
+
+
+<!-- 为 ECharts 准备一个定义了宽高的 DOM -->
+<div id="main" style="width: 60rem; height: 40rem"></div>
+<script type="text/javascript">
+
+
+
+
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    // 指定图表的配置项和数据
+    var option = {
+        title: {
+            text: 'Steam Top Sellers'
+        },
+        tooltip: {},
+        legend: {
+            data: ['Final Price']
+        },
+        xAxis: {
+            data: {{ games }}
+        },
+        yAxis: {},
+        series: [
+            {
+                name: 'Final Price',
+                type: 'bar',
+                data: {{discounts}}
+            }
+        ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+</body>
+</html>

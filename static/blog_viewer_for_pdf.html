@@ -1,0 +1,79 @@
+{% extends "blog_viewer_template.html" %}
+{% load static %}
+
+{% block header %}
+    <li><a href="/blog/all-blogs">&lt;&lt;&lt; Blog</a></li>
+    {#    <li><a href="#services">Services</a></li>#}
+    <li><a href="#blog" class="active">{{ blog.title }}</a></li>
+{% endblock %}
+
+
+{% block head_demonstration %}
+    <h6>I created this article on {{ blog.date }}.</h6>
+    <h6>This paper has been archived by authorized database, such as Turnitin.</h6>
+    <h6>To ensure academic integrity and avoid plagiarism, it is kindly requested that you cite it diligently and
+        responsibly by following the appropriate referencing guidelines. </h6>
+    <h6>Click here to download if available:</h6>
+    {#    <h6>{{ blog.link }}&#127881;</h6> #}
+    <div class="cv-btn">
+        <a href="#">Download PDF</a>
+    </div>
+{% endblock %}
+
+
+{% block article_frame %}
+    <div class="loader" id="loader"></div>
+    <style>
+        /* CSS样式，用于加载动画 */
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+            margin: 100px auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+    </style>
+
+
+    {% if blog.filetype %}
+        <iframe id="myiframe" class="iframe_blog" src="{{ blog.link }}" frameborder="0" scrolling="no"></iframe>
+    {% else %}
+        <embed src="{{ blog.link }}" type="application/pdf" width="100%" height="910rem"/>
+    {% endif %}
+
+    <script>
+
+        function adjustIframeHeight() {
+            var iframe = document.getElementById('myiframe');
+            var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+            var contentHeight = innerDoc.documentElement.scrollHeight;
+            iframe.style.height = contentHeight + 'px';
+        }
+
+        function disableLoadingAnimation() {
+            // 找到加载动画元素
+            var loader = document.getElementById("loader");
+
+            // 隐藏加载动画
+            loader.style.display = "none";
+        }
+
+        window.onload = function () {
+            adjustIframeHeight();
+            disableLoadingAnimation();
+        };
+
+    </script>
+{% endblock %}
